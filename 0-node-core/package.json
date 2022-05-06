@@ -1,0 +1,26 @@
+{
+  "name": "js-mosh",
+  "description": "Content used in learning Node JS",
+  "version": "1.0.0",
+  "main": "app.js",
+  "dependencies": {
+    "mongoose": "^6.3.2",
+    "underscore": "^1.13.3"
+  },
+  "devDependencies": {
+    "jshint": "^2.13.4"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/richardye101/node-js-mosh.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/richardye101/node-js-mosh/issues"
+  },
+  "homepage": "https://github.com/richardye101/node-js-mosh#readme"
+}
