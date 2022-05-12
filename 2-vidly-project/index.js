@@ -1,10 +1,33 @@
 // this service rent movies
 const express = require('express');
+const Joi = require('joi'); // capitalize because it is a class
+const helmet = require('helmet');
+const morgan = require('morgan');
+const config = require('config');
+// `export DEBUG=app:startup,app:db` or `export DEBUG=app:*`
+// or we can do `DEBUG=app:startup nodemon index.js` at runtime
+const debug = require('debug')('app:startup');
+
+// Custom middleware
 const logger = require('./logger');
 const auth = require('./authentication');
-const Joi = require('joi'); // capitalize because it is a class
+
+// Routes
+const home = require('./routes/home');
+const genres = require('./routes/genres');
 
 const app = express();
+
+// Store config settings and overwriting them, using the rc package or config package
+// Use the config package to read config files as well as environment variables
+// console.log(`app name: ${config.get('name')}\nMail Server: ${config.get('mail.host')}\nMail Password: ${config.get('mail.password')}`);
+
+// Templating, generally not needed?
+app.set('view engine', 'pug'); // no need to require it, express loads it internally
+app.set('views', './views'); // all views/templates are in this folder
+
+// console.log(`NODE_ENV: ${process.env.NODE_ENV}`); // usually undefined
+// console.log(`ENV: ${app.get('env')}`); // also gets the node env, sets development by default
 
 // Middleware to parse JSON objects from requests
 // Takes a request object and passes control to another middleware function or returns response to client
@@ -12,86 +35,33 @@ const app = express();
 app.use(express.json());
 // ^Reads the request, and if there is a JSON object in the body, then it will parse it into a JSON and set req.body
 
-// A middleware function that parses incoming requests with URL encoded payloads (info in the url) and puts it in req.body
+// This middleware function that parses incoming requests with URL encoded payloads (info in the url) and puts it in req.body
 // key=value&key=value
 // Tradition approach, generally not done anymore
-app.use(express.urlencoded({extended: true}));
+// app.use(express.urlencoded({extended: true}));
+
 // serves static content
 app.use(express.static('public'));
+// Some secure HTTPS header thing
+app.use(helmet());
+
+// HTTP request logger, only want this on a development machine
+if (app.get('env') === 'development'){
+    app.use(morgan('tiny'));
+    // console.log('morgan enabled');
+    debug('morgan enabled'); // only runs when an env variable tells it what we want to debug 
+}
 
 // Custom middleware function
 app.use(logger);
-app.use(auth);
+// app.use(auth);
 
+// Routes
+app.use('/', home);
+app.use('/api/genres', genres);
 
-// Task 1:
-// create service for managing list of genres
-const genres = [
-    {id:1, "genre":"horror"},
-    {id:2, "genre":"comedy"},
-    {id:3, "genre":"romance"},
-    {id:4, "genre":"action"}
-]
+// Every logical api endpoint needs a separate file/module
 
-app.get('/', (req,res)=>{
-    res.send("Welcome to my website of movie genres");
-});
-
-// Need endpoint to get all genres
-app.get('/api/genres', (req,res) => {
-    res.send(genres);
-});
-
-app.get('/api/genres/:id', (req,res) => {
-    const genre = genres.find(g => g.id === parseInt(req.params.id));
-    if(!genre) return res.status(404).send("The requested genre has not been found");
-    res.send(genre);
-});
-
-// Create new genres
-app.post('/api/genres', (req,res)=>{
-    // object destructuring!
-    const { error } = validateGenre(req.body);
-    // 400 is bad request
-    if(error) return res.status(400).send(error.details[0].message);
-
-    const genre = {
-        "id" : genres.length + 1,
-        "genre" : req.body.genre
-    }
-    genres.push(genre);
-    res.send(genre);
-});
-
-// Update genres
-app.put('/api/genres/:id', (req,res)=>{
-    const genreIdx = genres.findIndex(g => g.id === parseInt(req.params.id));
-    if(genreIdx === -1) return res.status(404).send("The requested genre has not been found");
-
-    const { error } = validateGenre(req.body);
-    if(error) return res.status(400).send(error.details[0].message);
-
-    genres[genreIdx].genre = req.body.genre;
-    res.send(genres[genreIdx]);
-});
-
-// Delete genres 
-app.delete('/api/genres/:id', (req, res)=>{
-    const genreIdx = genres.findIndex(g => g.id === parseInt(req.params.id));
-    const genre = genres.find(g => g.id === parseInt(req.params.id));
-    console.log(genre);
-    if(!genre) return res.status(404).send("The requested genres has not been found");
-
-    genres.splice(genreIdx,1);
-    res.send(genre);
-});
-
-function validateGenre(genre){
-    const schema = Joi.object({
-        genre:Joi.string().min(3).required() // only have validation for this
-    });
-    return schema.validate(genre);
-}
 // listen
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, (req,res)=>{
