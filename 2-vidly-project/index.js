@@ -12,6 +12,13 @@ const app = express();
 app.use(express.json());
 // ^Reads the request, and if there is a JSON object in the body, then it will parse it into a JSON and set req.body
 
+// A middleware function that parses incoming requests with URL encoded payloads (info in the url) and puts it in req.body
+// key=value&key=value
+// Tradition approach, generally not done anymore
+app.use(express.urlencoded({extended: true}));
+// serves static content
+app.use(express.static('public'));
+
 // Custom middleware function
 app.use(logger);
 app.use(auth);
