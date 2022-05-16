@@ -9,8 +9,8 @@ const config = require('config');
 const debug = require('debug')('app:startup');
 
 // Custom middleware
-const logger = require('./logger');
-const auth = require('./authentication');
+const logger = require('./middleware/logger');
+const auth = require('./middleware/authentication');
 
 // Routes
 const home = require('./routes/home');
@@ -23,8 +23,8 @@ const app = express();
 // console.log(`app name: ${config.get('name')}\nMail Server: ${config.get('mail.host')}\nMail Password: ${config.get('mail.password')}`);
 
 // Templating, generally not needed?
-app.set('view engine', 'pug'); // no need to require it, express loads it internally
-app.set('views', './views'); // all views/templates are in this folder
+// app.set('view engine', 'pug'); // no need to require it, express loads it internally
+// app.set('views', './views'); // all views/templates are in this folder
 
 // console.log(`NODE_ENV: ${process.env.NODE_ENV}`); // usually undefined
 // console.log(`ENV: ${app.get('env')}`); // also gets the node env, sets development by default
