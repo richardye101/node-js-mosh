@@ -1,6 +1,12 @@
+// Ways to deal with an async operation
+// Callbacks
+// Promises
+// Async/await
+
 console.log('Before');
 getUser(1, function(user) {
     console.log('User', user);
+    // Callback hell
     getRespositories(user.gitHubUsername, (repos)=>{
         console.log('Repos owned by user', repos);
     })
@@ -8,11 +14,6 @@ getUser(1, function(user) {
 });
 // console.log(user);
 console.log('After');
-
-// Ways to deal with an async operation
-// Callbacks
-// Promises
-// Async/await
 
 // Callback, once an async op is done running, we call the call back function and pass in the result
 function getUser(id, callback){
@@ -31,3 +32,5 @@ function getRespositories(username, callback){
     // return ['repo1', 'repo2', 'repo3'];
 }
 
+// Dealing with callback hell like above
+// Give the callback functions with names
