@@ -1,6 +1,5 @@
 // this service rent movies
 const express = require('express');
-const Joi = require('joi'); // capitalize because it is a class
 const helmet = require('helmet');
 const morgan = require('morgan');
 const config = require('config');
@@ -15,6 +14,7 @@ const auth = require('./middleware/authentication');
 // Routes
 const home = require('./routes/home');
 const genres = require('./routes/genres');
+const customers = require('./routes/customers');
 
 const app = express();
 
@@ -59,6 +59,7 @@ app.use(logger);
 // Routes
 app.use('/', home);
 app.use('/api/genres', genres);
+app.use('/api/customers', customers);
 
 // Every logical api endpoint needs a separate file/module
 
