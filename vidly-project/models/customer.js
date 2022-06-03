@@ -3,7 +3,7 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
 
-const Customer = mongoose.model('Customer', mongoose.Schema({
+const customerSchema = new mongoose.Schema({
     isGold: {
         type: Boolean,
         default: false,
@@ -22,7 +22,9 @@ const Customer = mongoose.model('Customer', mongoose.Schema({
         maxlength: 15,
         match: /[0-9]/
     }
-}))
+});
+
+const Customer = mongoose.model('Customer', customerSchema);
 
 function validateCustomer(cust){
     const schema = Joi.object({
@@ -33,5 +35,6 @@ function validateCustomer(cust){
     return schema.validate(cust);
 }
 
+exports.customerSchema = customerSchema;
 exports.Customer = Customer;
 exports.validate = validateCustomer;
