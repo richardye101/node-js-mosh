@@ -31,14 +31,16 @@ router.post('/', async (req, res) => {
         title: req.body.title,
         genre: {
             _id: genre._id,
-            genre: genre.name
+            genre: genre.genre
         },
         numberInStock: req.body.numberInStock,
         dailyRentalRate: req.body.dailyRentalRate
     })
     try{
-        movie = await movie.save();; //variable so we can reset genre
-        console.log(result);
+        // movie = await movie.save(); // resets movie after saving, only demonstrates it returns a movie document.
+        // movie object is set my the driver, not mongodb. dont need to reset this to return the id
+        await movie.save();
+        console.log('Movie successfully saved');
     }
     catch(err){
         console.error('Error', err.message);

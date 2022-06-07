@@ -63,11 +63,12 @@ const Rental = mongoose.model('Rental', new mongoose.Schema({
 
 function validateRental(rental){
     const schema = Joi.object({
-        customerId: Joi.string().hex().length(24).required(),
+        customerId: Joi.objectId().required(),
         movieId: Joi.string().hex().length(24).required()
         // don't want the client setting the dates or fees
     });
     // console.log('Validating the body of the request...');
+
     return schema.validate(rental);
 }
 

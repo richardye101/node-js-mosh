@@ -6,7 +6,8 @@ const config = require('config');
 // `export DEBUG=app:startup,app:db` or `export DEBUG=app:*`
 // or we can do `DEBUG=app:startup nodemon index.js` at runtime
 const debug = require('debug')('app:startup');
-
+const Joi = require('joi');
+Joi.objectId = require('joi-objectid')(Joi);
 // Custom middleware
 const logger = require('./middleware/logger');
 const auth = require('./middleware/authentication');
@@ -17,6 +18,8 @@ const genres = require('./routes/genres');
 const customers = require('./routes/customers');
 const movies = require('./routes/movies');
 const rentals = require('./routes/rentals');
+const users = require('./routes/users');
+const { use } = require('./routes/movies');
 
 const app = express();
 
@@ -64,6 +67,7 @@ app.use('/api/genres', genres);
 app.use('/api/customers', customers);
 app.use('/api/movies', movies);
 app.use('/api/rentals', rentals);
+app.use('/api/users', users);
 
 // Every logical api endpoint needs a separate file/module
 

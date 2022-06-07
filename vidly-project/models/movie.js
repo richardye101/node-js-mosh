@@ -37,7 +37,7 @@ function validateMovie(movie){
         //     genre:Joi.string().min(3).required(),
         //     _id: Joi.string().hex().length(24)
         // }), // wrong
-        genreId: Joi.string().hex().length(24).required(),
+        genreId: Joi.objectId().required(),
         numberInStock: Joi.number().min(0).required(),
         dailyRentalRate: Joi.number().min(0).required()
     });
