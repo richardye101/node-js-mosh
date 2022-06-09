@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
+const pwd_complex = require('joi-password-complexity');
+const jwt = require('jsonwebtoken');
+const config = require('config');
 
 const userSchema = new mongoose.Schema({
     email: {
@@ -26,8 +29,16 @@ const userSchema = new mongoose.Schema({
         required: true,
         minlength: 5,
         maxlength: 1024
-    }
+    },
+    isAdmin: Boolean
+    // roles: [] // defines a certain role that is able to do certain operations, or
+    // operations: [] // array of complex objects, granular control of what a user is capable of
 })
+
+userSchema.methods.generateAuthToken = function(){
+    const token = jwt.sign({ _id: this._id, isAdmin: this.isAdmin }, config.get('jwtPrivateKey'));
+    return token;
+}
 
 const User = mongoose.model('User', userSchema);
 
@@ -36,7 +47,15 @@ function validateUser(user){
         email: Joi.string().email().min(5).max(255).required(),
         name: Joi.string().min(5).max(255).required(),
         phone: Joi.number().required(),
-        password: Joi.string().min(5).max(255).required()
+        password: new pwd_complex({
+            min:5,
+            max:32,
+            lowerCase: 1,
+            upperCase: 1,
+            numeric: 1,
+            symbol: 1,
+            requirementCount: 3
+        })
     })
 
     return schema.validate(user);

@@ -8,9 +8,19 @@ const config = require('config');
 const debug = require('debug')('app:startup');
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
+const mongoose = require('mongoose');
+
+if(!config.get('jwtPrivateKey')){
+    console.error('FATAL ERROR: jwtPrivateKey is not defined');
+    process.exit(1); // exit when error, 0 means success, anything else is failure
+}
+
+mongoose.connect('mongodb://localhost/vidly')
+    .then(() => console.log('Connected to Vidly Database'))
+    .catch((err) => console.error('Error', err.message));
+
 // Custom middleware
 const logger = require('./middleware/logger');
-const auth = require('./middleware/authentication');
 
 // Routes
 const home = require('./routes/home');
@@ -19,7 +29,7 @@ const customers = require('./routes/customers');
 const movies = require('./routes/movies');
 const rentals = require('./routes/rentals');
 const users = require('./routes/users');
-const { use } = require('./routes/movies');
+const auth = require('./routes/auth');
 
 const app = express();
 
@@ -68,6 +78,7 @@ app.use('/api/customers', customers);
 app.use('/api/movies', movies);
 app.use('/api/rentals', rentals);
 app.use('/api/users', users);
+app.use('/api/auth', auth);
 
 // Every logical api endpoint needs a separate file/module
 

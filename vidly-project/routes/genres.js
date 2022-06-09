@@ -1,11 +1,13 @@
 const {Genre, validate } = require('../models/genre');
+const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
 const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
 
-mongoose.connect('mongodb://localhost/vidly')
-    .then(() => console.log('Connected to Vidly - Genres...'))
-    .catch(err => console.error('Error', err));
+// mongoose.connect('mongodb://localhost/vidly')
+//     .then(() => console.log('Connected to Vidly - Genres...'))
+//     .catch(err => console.error('Error', err));
 
 router.get('/', async (req,res) => {
     const genres = await Genre.find().sort('name');
@@ -19,7 +21,9 @@ router.get('/:id', async (req,res) => {
 });
 
 // Create new genres
-router.post('/', async (req,res)=>{
+router.post('/', auth, async (req,res)=>{
+    // read request header as only auth'd users can create genres
+
     // object destructuring!
     const { error } = validate(req.body);
     // 400 is bad request
@@ -37,7 +41,7 @@ router.post('/', async (req,res)=>{
 });
 
 // Update genres
-router.put('/:id', async (req,res)=>{
+router.put('/:id', auth, async (req,res)=>{
     const { error } = validate(req.body);
     if(error) return res.status(400).send(error.details[0].message);
 
@@ -53,7 +57,7 @@ router.put('/:id', async (req,res)=>{
 });
 
 // Delete genres 
-router.delete('/:id', async (req, res)=>{
+router.delete('/:id', [auth, admin], async (req, res)=>{
     const genre = await Genre.findByIdAndRemove(req.params.id);
 
     if(!genre) return res.status(404).send("The requested genres has not been found");

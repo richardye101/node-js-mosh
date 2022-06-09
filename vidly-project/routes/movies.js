@@ -1,12 +1,13 @@
-const { Movie, validate } = require('../models/movie');
 const mongoose = require('mongoose');
 const express = require('express');
+const { Movie, validate } = require('../models/movie');
 const { Genre } = require('../models/genre');
+const auth = require('../middleware/auth');
 const router = express.Router();
 
-mongoose.connect('mongodb://localhost/vidly')
-    .then(() => console.log("Connected to Vidly - Movies"))
-    .catch((err) => console.log('Error', err.message));
+// mongoose.connect('mongodb://localhost/vidly')
+//     .then(() => console.log("Connected to Vidly - Movies"))
+//     .catch((err) => console.log('Error', err.message));
 
 router.get('/', async (req, res) => {
     const movies = await Movie.find().sort('title');
@@ -19,7 +20,7 @@ router.get('/:id', async (req, res) => {
     res.send(movie);
 })
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     const { error } = validate(req.body);
     if(error) res.status(400).send(error.details[0].message);
 
@@ -49,7 +50,7 @@ router.post('/', async (req, res) => {
     res.send(movie);
 })
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', auth, async (req, res) => {
     const { error } = validate(req.body);
     if(error) res.status(400).send(error.details[0].message);
 
@@ -63,7 +64,7 @@ router.put('/:id', async (req, res) => {
     res.send(movie);
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
     const movie = await Movie.findByIdAndRemove(req.params.id);
 
     if(!movie) return res.status(404).send("The requested movie has not been found");
