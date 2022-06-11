@@ -1,6 +1,7 @@
 const {Genre, validate } = require('../models/genre');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
+// const asyncMiddleware = require('../middleware/async'); // replaced with express-async-errors 
 const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
@@ -9,9 +10,19 @@ const router = express.Router();
 //     .then(() => console.log('Connected to Vidly - Genres...'))
 //     .catch(err => console.error('Error', err));
 
-router.get('/', async (req,res) => {
+router.get('/', async (req, res) => { //asyncMiddleware(
+    throw new Error('Could not get the genres');
+
     const genres = await Genre.find().sort('name');
     res.send(genres);
+
+    // catch(ex){
+    //     // Log exception
+    //     // res.status(500).send('Something failed.'); // internal server error
+        
+    //     // passing the exception on to the next middleware call (in index.js)
+    //     next(ex);
+    // }
 });
 
 router.get('/:id', async (req,res) => {

@@ -13,6 +13,7 @@
     "config": "^3.3.7",
     "debug": "^4.3.4",
     "express": "^4.18.1",
+    "express-async-errors": "^3.1.1",
     "helmet": "^5.0.2",
     "joi": "^17.6.0",
     "joi-objectid": "^4.0.2",
@@ -23,7 +24,9 @@
     "mongoose": "^6.3.4",
     "morgan": "^1.10.0",
     "pug": "^3.0.2",
-    "run-rs": "^0.7.6"
+    "run-rs": "^0.7.6",
+    "winston": "^3.7.2",
+    "winston-mongodb": "^5.0.7"
   },
   "devDependencies": {
     "jshint": "^2.13.4"
