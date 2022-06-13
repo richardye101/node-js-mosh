@@ -18,7 +18,7 @@ const Genre = mongoose.model('Genre', genreSchema); //creates a new collection w
 
 function validateGenre(genre){
     const schema = Joi.object({
-        genre:Joi.string().min(3).required() // only have validation for this
+        genre:Joi.string().min(5).max(50).required() // only have validation for this
     });
     return schema.validate(genre);
 }

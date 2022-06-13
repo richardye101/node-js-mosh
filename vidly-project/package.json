@@ -4,7 +4,7 @@
   "description": "a movie renting service",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest --verbose"
   },
   "author": "",
   "license": "ISC",
@@ -29,6 +29,8 @@
     "winston-mongodb": "^5.0.7"
   },
   "devDependencies": {
-    "jshint": "^2.13.4"
+    "jest": "^28.1.1",
+    "jshint": "^2.13.4",
+    "supertest": "^6.2.3"
   }
 }

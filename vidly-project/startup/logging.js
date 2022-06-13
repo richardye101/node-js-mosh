@@ -5,7 +5,7 @@ require('express-async-errors');
 
 const winston = require('winston'); // default logger
 const { format } = require('winston');
-require('winston-mongodb');
+// require('winston-mongodb'); // might not work when implementing integration tests, need to comment out if needed
 
 const helmet = require('helmet');
 const morgan = require('morgan');
@@ -37,11 +37,13 @@ module.exports = function(app) {
     winston.add(
         new winston.transports.Console({colorize: true, prettyPrint: true, level: 'info'}),
         new winston.transports.File({filename: 'logfile.log'}));
-    winston.add(new winston.transports.MongoDB({ 
-        db: 'mongodb://localhost/vidly',
-        level: 'error', // only error messages will be logged in the db
-        format: format.metadata() // get the metadata set in the db
-    })); //logs errors to mongodb
+        
+    // can't use when running integration tests
+    // winston.add(new winston.transports.MongoDB({ 
+    //     db: 'mongodb://localhost/vidly',
+    //     level: 'error', // only error messages will be logged in the db
+    //     format: format.metadata() // get the metadata set in the db
+    // })); //logs errors to mongodb
 
     // Trying out errors
     // const p = Promise.reject(new Error('Somthing failed miserably!'));
