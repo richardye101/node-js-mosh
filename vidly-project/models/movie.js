@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { genreSchema } = require('./genre');
-const Joi = require('joi'); // capitalize because it is a class
+const joi = require('joi'); // capitalize because it is a class
 
 const movieSchema = new mongoose.Schema({
     title: {
@@ -31,15 +31,15 @@ const movieSchema = new mongoose.Schema({
 const Movie = mongoose.model('Movie', movieSchema);
 
 function validateMovie(movie){
-    const schema = Joi.object({
-        title: Joi.string().min(5).required(),
-        // genre: Joi.object().keys({
-        //     genre:Joi.string().min(3).required(),
-        //     _id: Joi.string().hex().length(24)
+    const schema = joi.object({
+        title: joi.string().min(5).required(),
+        // genre: joi.object().keys({
+        //     genre:joi.string().min(3).required(),
+        //     _id: joi.string().hex().length(24)
         // }), // wrong
-        genreId: Joi.objectId().required(),
-        numberInStock: Joi.number().min(0).required(),
-        dailyRentalRate: Joi.number().min(0).required()
+        genreId: joi.objectId().required(),
+        numberInStock: joi.number().min(0).required(),
+        dailyRentalRate: joi.number().min(0).required()
     });
     return schema.validate(movie);
 }

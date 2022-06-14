@@ -1,4 +1,4 @@
-const Joi = require('joi');
+const joi = require('joi');
 const express = require('express');
 // It returns a Express object, called app by convention
 const app = express();
@@ -48,9 +48,9 @@ app.post('/api/courses', (req,res)=>{
     //     return;
     // }
 
-    // define Joi schema for our courses, refactored to a function
-    // const schema = Joi.object({
-    //   name: Joi.string().min(3).required()  
+    // define joi schema for our courses, refactored to a function
+    // const schema = joi.object({
+    //   name: joi.string().min(3).required()  
     // });
     // const result = schema.validate(req.body);
     // console.log(result);
@@ -83,9 +83,9 @@ app.put('/api/courses/:id', (req,res)=>{
 
     // if found, validate
     // not found, 400 (bad request)
-    // We'll reuse this Joi code into a function
-    // const schema = Joi.object({
-    //     name: Joi.string().min(3).required()
+    // We'll reuse this joi code into a function
+    // const schema = joi.object({
+    //     name: joi.string().min(3).required()
     //   });
     // const result = schema.validate(req.body);
 
@@ -108,8 +108,8 @@ app.put('/api/courses/:id', (req,res)=>{
 
 // A function to validate a course object from a request thats used in both post and put requests
 function validateCourse(course){
-    const schema = Joi.object({
-        name: Joi.string().min(3).required()
+    const schema = joi.object({
+        name: joi.string().min(3).required()
       });
     return schema.validate(course);
 };

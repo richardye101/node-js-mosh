@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Joi = require('joi'); // capitalize because it is a class
+const joi = require('joi'); // capitalize because it is a class
 
 const genreSchema = new mongoose.Schema({
     genre: {
@@ -17,8 +17,8 @@ const genreSchema = new mongoose.Schema({
 const Genre = mongoose.model('Genre', genreSchema); //creates a new collection with the specified schema
 
 function validateGenre(genre){
-    const schema = Joi.object({
-        genre:Joi.string().min(5).max(50).required() // only have validation for this
+    const schema = joi.object({
+        genre:joi.string().min(5).max(50).required() // only have validation for this
     });
     return schema.validate(genre);
 }

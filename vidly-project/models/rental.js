@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const moment = require('moment');
 const { customerSchema } = require('./customer');
 const { movieSchema } = require('./movie');
-const Joi = require('joi'); // capitalize because it is a class
+const joi = require('joi'); // capitalize because it is a class
 
 const rentalSchema = new mongoose.Schema({
     // customer: {
@@ -80,9 +80,9 @@ const Rental = mongoose.model('Rental', rentalSchema);
 
 
 function validateRental(rental){
-    const schema = Joi.object({
-        customerId: Joi.objectId().required(),
-        movieId: Joi.string().hex().length(24).required()
+    const schema = joi.object({
+        customerId: joi.objectId().required(),
+        movieId: joi.string().hex().length(24).required()
         // don't want the client setting the dates or fees
     });
     // console.log('Validating the body of the request...');

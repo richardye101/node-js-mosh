@@ -59,8 +59,8 @@ router.delete('/:id', (req, res)=>{
 });
 
 function validateGenre(genre){
-    const schema = Joi.object({
-        genre:Joi.string().min(3).required() // only have validation for this
+    const schema = joi.object({
+        genre:joi.string().min(3).required() // only have validation for this
     });
     return schema.validate(genre);
 }

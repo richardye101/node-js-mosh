@@ -1,4 +1,4 @@
-const Joi = require('Joi');
+const joi = require('joi');
 const pwd_complex = require('joi-password-complexity');
 const mongoose = require('mongoose');
 const express = require('express');
@@ -27,8 +27,8 @@ router.post('/', async (req, res) => {
 });
 
 function validate(req){
-    const schema = Joi.object({
-        email: Joi.string().email().min(5).max(255).required(),
+    const schema = joi.object({
+        email: joi.string().email().min(5).max(255).required(),
         password: new pwd_complex({
             min:5,
             max:32,

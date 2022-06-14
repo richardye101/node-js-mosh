@@ -1,7 +1,7 @@
 // Single responsibility principle: A single module is only responsible for a single thing
 // This module is responsible for defining and validating a customer object is
 const mongoose = require('mongoose');
-const Joi = require('joi');
+const joi = require('joi');
 
 const customerSchema = new mongoose.Schema({
     isGold: {
@@ -27,10 +27,10 @@ const customerSchema = new mongoose.Schema({
 const Customer = mongoose.model('Customer', customerSchema);
 
 function validateCustomer(cust){
-    const schema = Joi.object({
-        isGold: Joi.boolean(),
-        name: Joi.string().min(5).max(50).required(),
-        phone: Joi.string().min(5).max(50).required().alphanum()
+    const schema = joi.object({
+        isGold: joi.boolean(),
+        name: joi.string().min(5).max(50).required(),
+        phone: joi.string().min(5).max(50).required().alphanum()
     })
     return schema.validate(cust);
 }

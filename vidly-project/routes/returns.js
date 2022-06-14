@@ -3,7 +3,7 @@
 // only authenticated users can post
 
 const moment = require('moment');
-const Joi = require('joi');
+const joi = require('joi');
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
@@ -32,9 +32,9 @@ router.post('/', [auth, validate(validateReturn)], async (req, res) => {
 })
 
 function validateReturn(req){
-    const schema = Joi.object({
-        customerId:Joi.objectId().required(),
-        movieId:Joi.objectId().required()
+    const schema = joi.object({
+        customerId:joi.objectId().required(),
+        movieId:joi.objectId().required()
     });
     return schema.validate(req);
 }
