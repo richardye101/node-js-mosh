@@ -1,5 +1,5 @@
 // this service rent movies
-const winston = require('winston');
+const winston = require('winston'); // for logging errors
 const express = require('express');
 const app = express();
 
@@ -9,6 +9,7 @@ require('./startup/routes')(app);
 require('./startup/db')();
 require('./startup/config')();
 require('./startup/validation')();
+require('./startup/prod')(app); // could conditionally load, not now tho
 
 // Templating, generally not needed?
 // app.set('view engine', 'pug'); // no need to require it, express loads it internally

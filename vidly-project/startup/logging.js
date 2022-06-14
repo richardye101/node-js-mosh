@@ -7,7 +7,6 @@ const winston = require('winston'); // default logger
 const { format } = require('winston');
 // require('winston-mongodb'); // might not work when implementing integration tests, need to comment out if needed
 
-const helmet = require('helmet');
 const morgan = require('morgan');
 // `export DEBUG=app:startup,app:db` or `export DEBUG=app:*`
 // or we can do `DEBUG=app:startup nodemon index.js` at runtime
@@ -54,9 +53,6 @@ module.exports = function(app) {
 
     // console.log(`NODE_ENV: ${process.env.NODE_ENV}`); // usually undefined
     // console.log(`ENV: ${app.get('env')}`); // also gets the node env, sets development by default
-
-    // Some secure HTTPS header thing
-    app.use(helmet());
 
     // HTTP request logger, only want this on a development machine
     if (app.get('env') === 'development'){

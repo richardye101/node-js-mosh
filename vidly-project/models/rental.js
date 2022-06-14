@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
 const { customerSchema } = require('./customer');
 const { movieSchema } = require('./movie');
 const Joi = require('joi'); // capitalize because it is a class
 
-const Rental = mongoose.model('Rental', new mongoose.Schema({
+const rentalSchema = new mongoose.Schema({
     // customer: {
     //     type: customerSchema,
     //     required: true
@@ -59,7 +60,24 @@ const Rental = mongoose.model('Rental', new mongoose.Schema({
         type: Number,
         min: 0
     }
-}));
+});
+
+rentalSchema.statics.lookup = function(customerId, movieId) {
+    return this.findOne({ // let caller await the promise, this references the Rental class
+        'customer._id': customerId,
+        'movie._id': movieId
+    });
+};
+
+rentalSchema.methods.return = function() {
+    this.dateReturned = new Date();
+
+    const rentalDays = moment().diff(this.dateOut, 'days')
+    this.rentalFee = rentalDays * this.movie.dailyRentalRate;
+}
+
+const Rental = mongoose.model('Rental', rentalSchema);
+
 
 function validateRental(rental){
     const schema = Joi.object({

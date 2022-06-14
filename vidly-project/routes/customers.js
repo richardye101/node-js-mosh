@@ -48,7 +48,7 @@ router.put('/:id', auth, async (req, res)=>{
 router.delete('/:id', auth, async (req, res)=>{
     const customer = Customer.findByIdAndDelete(req.params.id);
 
-    if(!customer) res.status(404),send('The requested customer has not been found');
+    if(!customer) res.status(404).send('The requested customer has not been found');
 
     res.send(customer);
 })
